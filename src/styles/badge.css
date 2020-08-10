@@ -1,0 +1,3 @@
+.badge {
+  @apply inline-block py-1 px-2 rounded-full bg-support-100 text-support-500 mr-2 text-xs;
+}

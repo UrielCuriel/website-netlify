@@ -1,0 +1,20 @@
+html {
+  @apply bg-neutral-100;
+  scrollbar-width: thin;
+  scrollbar-color: #37bcc8 ​​#f1f5f8;
+}
+
+body {
+  @apply font-body relative;
+}
+
+.bg-blur {
+  backdrop-filter: blur(5px);
+}
+
+.-z-2 {
+  z-index: -2;
+}
+del {
+  @apply text-neutral-300;
+}

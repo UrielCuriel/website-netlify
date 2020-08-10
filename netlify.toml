@@ -1,0 +1,10 @@
+[dev]
+framework = "#custom"
+command = "npm run dev"
+targetPort = 5000
+functions = "functions"
+
+[build]
+command = "npm run build" 
+functions = "functions" # netlify dev uses this directory to scaffold and serve your functions
+publish = "dist"

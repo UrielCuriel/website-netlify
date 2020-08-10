@@ -1,0 +1,20 @@
+{
+  "background_color": "hsl(210, 36%, 96%)",
+  "theme_color": "hsl(330, 66%, 57%)",
+  "name": "Uriel Curiel",
+  "short_name": "Uriel Curiel IT Consultant",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/images/touch-icons/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/touch-icons/logo-800.png",
+      "sizes": "800x800",
+      "type": "image/png"
+    }
+  ]
+}
