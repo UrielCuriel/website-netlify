@@ -1,13 +1,25 @@
 <script lang="ts">
-  import { fly } from "svelte/transition"
+  import { fly, fade, crossfade, scale, draw } from "svelte/transition"
   import { quintOut } from "svelte/easing"
-  import { isActive, url } from "@sveltech/routify"
+  import { isActive, url, goto, page, params } from "@sveltech/routify"
   import { setContext } from "svelte"
   import Logo from "./Logo.svelte"
+  import Dropdown from "./Dropdown.svelte"
+  import {
+    faLanguage,
+    faTimes,
+    faBars,
+  } from "@fortawesome/free-solid-svg-icons"
+  const [send, receive] = crossfade({
+    duration: 200,
+    fallback: draw,
+  })
+  import { locales, locale } from "../api/cms"
+  import Icon from "./Icon.svelte"
   let active = false
   let disabled = false
   let activedTrasitions = []
-  let showLogo = false
+  export let showLogo: boolean = false
   const startTransition = () => {
     activedTrasitions.push(true)
     disabled = activedTrasitions.length > 0
@@ -21,6 +33,11 @@
       showLogo = value
     },
   })
+  let openLang: boolean = false
+  const selectLang = (lang) => {
+    $goto($page.path, { locale: lang.code })
+    openLang = false
+  }
   const menu = [
     {
       href: "/",
@@ -41,76 +58,36 @@
       name: "work",
       segment: "work",
       title: "Mi Trabajo",
-      text: "Mi forma de trabajar y mi portafolio está aqui",
+      text: "mi portafolio está aqui",
+    },
+    {
+      href: "/skills",
+      name: "skills",
+      segment: "skills",
+      title: "Habilidades",
+      text: "Mis habilidades las encuentras en esta sección",
     },
     {
       href: "/blog",
       name: "blog",
       segment: "blog",
       title: "Blog",
-      text: "Mi vida como desarrollador puedes verla en esta sección",
-    },
-    {
-      href: "/contact",
-      name: "contact",
-      segment: "contact",
-      title: "Contacto",
-      text: "Te interesa trabajar conmigo, adelante!",
+      text: "Mi blog lo puedes encotrar aquí",
     },
   ]
 </script>
 
 <style lang="postcss">
   .menu {
-    @apply z-10 fixed right-0 top-0 m-3 bottom-0 left-0;
+    @apply z-40 fixed right-0 top-0 m-0  mt-12 bottom-0 left-0;
     user-select: none;
   }
-  .menu-button {
-    @apply w-16 h-12 p-3  rounded-md;
-  }
-  .menu-button.active {
-    @apply bg-transparent;
-  }
-  .menu-button-container {
-    @apply relative w-full h-full;
-  }
-  .menu-button.disabled {
-    @apply pointer-events-none;
-  }
-  .menu-button span {
-    @apply absolute w-full block bg-primary-500;
-    transition: all 300ms cubic-bezier(0.55, 0.085, 0.68, 0.53);
-    height: 2px;
-  }
-  .menu-button span:nth-child(1) {
-    top: 0;
-  }
-  .menu-button span:nth-child(2) {
-    top: 50%;
-    margin-top: -1px;
-  }
-  .menu-button span:nth-child(3) {
-    bottom: 0;
-  }
-  .menu-button.active span:nth-child(n) {
-    top: 50%;
-    margin-top: -0.125rem;
-  }
-  .menu-button.active span:nth-child(odd) {
-    @apply transform;
-    --transform-rotate: 225deg;
-  }
-  .menu-button.active span:nth-child(even) {
-    @apply transform;
-    --transform-rotate: 315deg;
-  }
   .menu-list {
-    @apply w-full h-full flex flex-col;
+    @apply w-full h-full flex flex-col list-none;
   }
   .menu-list-item {
     @apply w-full;
     height: 20vh;
-    backdrop-filter: blur(6px);
   }
   @screen md {
     .menu-list {
@@ -121,7 +98,7 @@
     }
   }
   .menu-list-item a {
-    @apply w-full h-full flex flex-col bg-neutral-100 px-16 items-center justify-center text-neutral-500 capitalize text-center transition-all duration-500 ease-in-out bg-opacity-75;
+    @apply w-full h-full flex flex-col bg-white px-16 items-center justify-center text-neutral-500 capitalize text-center transition-all duration-500 ease-in-out bg-opacity-75;
     -webkit-user-drag: none;
   }
   .menu-list-item a:hover {
@@ -129,32 +106,111 @@
     background-position: 0%;
   }
   .menu-list-item a span {
-    @apply font-display font-bold text-xl text-support-500 transition-all duration-500 ease-in-out;
+    @apply font-display  text-xl text-support-500 transition-all duration-500 ease-in-out;
   }
   .menu-list-item a:hover span {
     @apply text-support-700;
   }
+  .st0 {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 40;
+    stroke-linecap: round;
+    stroke-linejoin: bevel;
+    stroke-miterlimit: 10;
+  }
 </style>
 
 <header
-  class="fixed right-0 top-0 w-screen {showLogo ? 'bg-neutral-100' : ''} flex
-  justify-between h-12 z-20 items-center px-8">
+  class="fixed right-0 top-0 w-screen transition-colors duration-500 ease-in-out
+  {showLogo || active ? 'bg-white bg-opacity-75 bg-blur' : ''} flex
+  justify-between h-12 z-50 items-center px-8 select-none">
   <span>
-    <Logo show={showLogo} class="text-2xl font-normal" />
+    <a href={$url('/')}>
+      <Logo show={showLogo || active} class="text-2xl font-normal" />
+    </a>
   </span>
-  <button
-    class="menu-button focus:outline-none"
-    on:click={() => (active = !active)}
-    class:disabled
-    class:active
-    aria-label="menu">
-    <span class="sr-only">Menu</span>
-    <div class="menu-button-container focus:outline-none">
-      <span />
-      <span />
-      <span />
-    </div>
-  </button>
+  <div class="flex items-center ">
+    <button class=" mx-2 focus:outline-none" />
+    <Dropdown
+      class="h-12 w-12 mx-2"
+      buttonClass="h-12 w-12 text-neutral-600 select-none"
+      menuClass="right-0 mr-1 select-none"
+      title="titulo"
+      icon={faLanguage}
+      iconClass="text-support-300 w-8 h-8 hidden"
+      animateIcon={false}
+      open={openLang}>
+      <span slot="button">{$params.locale}</span>
+      <div slot="menu" class="text-neutral-600">
+        {#each $locales as lang}
+          <button
+            class="px-2 py-1 block w-full hover:text-support-600 text-sm {lang.code == $params.locale ? 'text-support-600' : ''}"
+            on:click={() => selectLang(lang)}>
+            {lang.name}
+          </button>
+        {/each}
+      </div>
+    </Dropdown>
+    <button
+      class="focus:outline-none text-primary-600 relative w-6 h-6
+      overflow-hidden"
+      on:click={() => (active = !active)}
+      aria-label="menu">
+      <span class="sr-only">Menu</span>
+      <svg
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 512 512"
+        xml:space="preserve">
+        {#if active}
+          <line
+            transition:draw
+            class="st0"
+            x1="96.8"
+            y1="83"
+            x2="347.2"
+            y2="333.4" />
+          <line
+            transition:draw
+            class="st0"
+            x1="89.1"
+            y1="422.9"
+            x2="422.9"
+            y2="89.1" />
+          <line
+            transition:draw
+            class="st0"
+            x1="263.7"
+            y1="249.9"
+            x2="430.6"
+            y2="416.8" />
+        {:else}
+          <line
+            transition:draw
+            class="st0"
+            x1="492"
+            y1="256"
+            x2="138"
+            y2="256" />
+          <line transition:draw class="st0" x1="492" y1="20" x2="20" y2="20" />
+          <line
+            transition:draw
+            class="st0"
+            x1="492"
+            y1="492"
+            x2="256"
+            y2="492" />
+        {/if}
+
+      </svg>
+
+    </button>
+
+  </div>
 </header>
 
 {#if active}
@@ -162,13 +218,15 @@
     <ul class="menu-list">
       {#each menu as item, i}
         <li
-          class="menu-list-item"
+          class="menu-list-item bg-blur"
           transition:fly={{ y: -600, delay: 250 + i * 100, duration: 300, easing: quintOut }}
           on:introstart={startTransition}
           on:introend={endTransition}
           on:outrostart={startTransition}
           on:outroend={endTransition}>
-          <a on:click={() => (active = false)} href={$url(item.href)}>
+          <a
+            on:click={() => (active = false)}
+            href={$url(item.href, { ...$params })}>
             <span
               transition:fly={{ y: -300, duration: 600, delay: 300 + i * 100 }}>
               {item.title}

@@ -2,9 +2,15 @@
   import { Router } from "@sveltech/routify"
   import { routes } from "../.routify/routes"
   import { parse, stringify } from "qs"
+  import { get } from "svelte/store"
+  import { locale } from "./api/cms"
   const queryHandler = {
-    parse: (params) => parse(params, { ignoreQueryPrefix: true }),
-    stringify: (params) => stringify(params, { addQueryPrefix: true }),
+    parse: (params) => {
+      const query = parse(params, { ignoreQueryPrefix: true })
+
+      return { ...query, locale: query.locale ?? "es-MX" }
+    },
+    stringify: (params) => stringify({ ...params }, { addQueryPrefix: true }),
   }
 </script>
 

@@ -1,11 +1,11 @@
 html {
-  @apply bg-neutral-100;
+  @apply bg-white;
   scrollbar-width: thin;
-  scrollbar-color: #37bcc8 ​​#f1f5f8;
+  scrollbar-color: #37bcc8 ​​#ffffff;
 }
 
 body {
-  @apply font-body relative;
+  @apply font-body relative m-0 p-0;
 }
 
 .bg-blur {

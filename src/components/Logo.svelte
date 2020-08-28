@@ -5,7 +5,7 @@
 
 {#if show}
   <h1
-    class="font-logo {$$props.class} text-neutral-600"
+    class="font-logo {$$props.class} text-neutral-600 select-none"
     style={$$props.style}>
     <span
       class="text-support-500"
