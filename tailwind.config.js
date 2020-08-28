@@ -53,6 +53,9 @@ module.exports = {
       minHeight: {
         page: "calc(100vh - 56px)",
       },
+      screens: {
+        print: { raw: "print" },
+      },
     },
     fontFamily: {
       display: ["Leo Rounded Pro", "Roboto"],
@@ -63,6 +66,6 @@ module.exports = {
     },
     colors: { primary, neutral, support, ...base },
   },
-  variants: { fill: ["hover"] },
+  variants: { fill: ["hover"], animation: ["responsive", "hover", "focus"] },
   plugins: [],
 }

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { fade } from "svelte/transition"
-  import type { IPost } from "../types/post"
   import { prefetch, url } from "@sveltech/routify"
   import type { IBlogPost } from "../types/contentful"
   export let post: IBlogPost
