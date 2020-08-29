@@ -1,6 +1,7 @@
 import { params } from "@sveltech/routify"
 import { derived } from "svelte/store"
 import { queryProfile } from "../api/queries"
+import type { Author } from "../types/types"
 
 export const profile = derived(
   params,

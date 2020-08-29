@@ -60,13 +60,13 @@
       title: "Mi Trabajo",
       text: "mi portafolio está aqui",
     },
-    {
-      href: "/skills",
-      name: "skills",
-      segment: "skills",
-      title: "Habilidades",
-      text: "Mis habilidades las encuentras en esta sección",
-    },
+    // {
+    //   href: "/skills",
+    //   name: "skills",
+    //   segment: "skills",
+    //   title: "Habilidades",
+    //   text: "Mis habilidades las encuentras en esta sección",
+    // },
     {
       href: "/blog",
       name: "blog",
@@ -94,7 +94,7 @@
       @apply flex-row;
     }
     .menu-list-item {
-      @apply h-full w-1/5;
+      @apply h-full w-1/4;
     }
   }
   .menu-list-item a {

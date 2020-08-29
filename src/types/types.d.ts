@@ -1,9 +1,9 @@
-interface Author {
+export interface Author {
   sys: Sys
   name: string
   resume: string
   socialMedia: SocialMedia[]
-  profilePic: ProfilePic
+  profilePic: File
   bio: string
   email: string
   phone: string
@@ -11,11 +11,11 @@ interface Author {
   educationCollection: EducationCollection
 }
 
-interface JobsCollection {
+export interface JobsCollection {
   items: Job[]
 }
 
-interface Job {
+export interface Job {
   sys: Sys
   name: string
   title: string
@@ -26,51 +26,38 @@ interface Job {
   projectsCollection: ProjectsCollection
 }
 
-interface ProjectsCollection {
+export interface ProjectsCollection {
   items: Project[]
 }
-
-interface Project {
-  sys: Sys
-  title: string
-  description: string
-  challenges: string
-  contribution: string
-  outcome: string
-  comments: string
-  date: string
-  url?: string
-  skillsCollection: SkillsCollection
-}
-
-interface SkillsCollection {
+export interface SkillsCollection {
   items: Skill[]
 }
 
-interface Skill {
+export interface Skill {
   sys: Sys
   name: string
 }
 
-interface ProfilePic {
-  title: string
-  url: string
+export interface File {
+  sys?: Sys
+  title?: string
+  url?: string
 }
 
-interface SocialMedia {
+export interface SocialMedia {
   href: string
   name: string
   value: string
 }
 
-interface Sys {
+export interface Sys {
   id: string
 }
-interface EducationCollection {
+export interface EducationCollection {
   items: Edicacion[]
 }
 
-interface Edicacion {
+export interface Edicacion {
   sys: Sys
   name: string
   dateStart: string
@@ -79,13 +66,33 @@ interface Edicacion {
   institute: string
   description: string
 }
-interface SkillCollection {
+export interface SkillCollection {
   items: Skill[]
 }
 
-interface Skill {
+export interface Skill {
   sys: Sys
   name: string
   type: string
   years?: number
+}
+
+export interface ProjectCollection {
+  items: Project[]
+}
+
+export interface Project {
+  sys: Sys
+  title: string
+  url?: string
+  date: string
+  description?: string
+  challenges?: string
+  contribution?: string
+  preview?: File
+  skillsCollection: SkillsCollection
+}
+
+export interface SkillsCollection {
+  items: Skill[]
 }

@@ -89,7 +89,7 @@ registerRoute(hasFreshCache, new CacheFirst(externalAssetsConfig()))
 registerRoute(hasWitheringCache, new CacheFirst())
 
 // serve external pages and assets
-setDefaultHandler(new NetworkFirst(externalAssetsConfig()))
+// setDefaultHandler(new NetworkFirst(externalAssetsConfig()))
 
 // serve a fallback for 404s if possible or respond with an error
 setCatchHandler(async ({ event }) => {
