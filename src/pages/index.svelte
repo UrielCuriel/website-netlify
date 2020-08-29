@@ -58,17 +58,21 @@
     </div>
   </div>
   {#await $profile then profile}
-    <div class="container min-h-screen h-screen flex items-center m-auto">
-      <div
-        class="w-2/3 text-2xl text-neutral-600 p-4"
-        style={`transform: translate(${$scrollStore.top - $sizeStore.y}px,0);`}>
-        {@html converter.makeHtml(profile.resume)}
+    {#if profile}
+      <div class="container min-h-screen h-screen flex items-center m-auto">
+        <div
+          class="w-2/3 text-2xl text-neutral-600 p-4"
+          style={`transform: translate(${$scrollStore.top - $sizeStore.y}px,0);`}>
+          {@html converter.makeHtml(profile.resume)}
+        </div>
+        <div
+          class="w-1/3 overflow-hidden shadow-lg rounded-full"
+          style={`transform: translate(${$sizeStore.y - $scrollStore.top}px,0);`}>
+          <img src={profile.profilePic.url} alt="" />
+        </div>
       </div>
-      <div
-        class="w-1/3 overflow-hidden shadow-lg rounded-full"
-        style={`transform: translate(${$sizeStore.y - $scrollStore.top}px,0);`}>
-        <img src={profile.profilePic.url} alt="" />
-      </div>
-    </div>
+    {/if}
+  {:catch}
+    <span>no data</span>
   {/await}
 {/if}

@@ -37,7 +37,7 @@
       .then((r) => r.json())
       .then((data) =>
         (data.data.skillCollection.items as Skill[]).reduce((group, item) => {
-          group[item["type"]] = [...(group[item["type"]] ?? []), item]
+          group[item["type"]] = [...(group[item["type"]] || []), item]
           return group
         }, {}),
       )
@@ -56,7 +56,7 @@
       height: 282mm;
       overflow: visible;
     }
- 
+
     table {
       width: 190mm;
       page-break-inside: auto;
@@ -286,7 +286,7 @@
             <td class="text-sm font-bold " colspan="3">
               {project.title}
               <span class="font-normal text-primary-500">
-                {project.url ?? ''}
+                {project.url || ''}
               </span>
             </td>
           </tr>

@@ -4,7 +4,7 @@
   let path: string = ""
   let classes = ""
   let viewBox = ""
-  $: viewBox = `0 0 ${icon?.icon[0] ?? 0} ${icon?.icon[1] ?? 0}`
+  $: viewBox = `0 0 ${icon?.icon[0] || 0} ${icon?.icon[1] || 0}`
   $: classes =
     " h-4 w-4 inline-block overflow-visible " +
     ($$props.class ? $$props.class : "")

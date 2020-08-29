@@ -37,45 +37,45 @@
   }
 </style>
 
-{#if $isActive('/work')}
-  <div class="container mx-auto my-16 ">
-    {#if projects}
-      <h1 class="text-4xl text-primary-500">Proyectos</h1>
-      <div class="projects col-gap-4">
-        {#each projects as project, i}
-          <div
-            transition:fly={{ x: 200, delay: i * 100 }}
-            class="flex my-4 flex-col shadow-md p-2">
-            <div class="w-full mx-0">
-              <h1 class="text-xl text-support-500">{project.title}</h1>
-              <p>
-                {@html converter.makeHtml(project.description)}
-              </p>
-            </div>
-            <div>
-              {#each project.skillsCollection.items as skill}
-                <div class="badge">{skill.name}</div>
-              {/each}
-            </div>
-            <div>
-              {#if project.url}
-                <p>
-                  <a href={project.url} target="_blank">Visitar Sitio</a>
-                </p>
-              {/if}
-            </div>
-            <div class="mx-0 max-w-sm">
-              {#if project.preview}
-                <img
-                  src={project.preview?.url}
-                  alt=""
-                  class="w-full h-32 object-contain" />
-              {/if}
-            </div>
+<!-- {#if $isActive('/work')} -->
+<div class="container mx-auto my-16 ">
+  {#if projects}
+    <h1 class="text-4xl text-primary-500">Proyectos</h1>
+    <div class="projects col-gap-4">
+      {#each projects as project, i}
+        <div
+          in:fly={{ y: 200, delay: i * 100 }}
+          class="flex my-4 flex-col shadow-md p-2">
+          <div class="w-full mx-0">
+            <h1 class="text-xl text-support-500">{project.title}</h1>
+            <p>
+              {@html converter.makeHtml(project.description)}
+            </p>
           </div>
-        {/each}
-      </div>
-    {/if}
+          <div>
+            {#each project.skillsCollection.items as skill}
+              <div class="badge">{skill.name}</div>
+            {/each}
+          </div>
+          <div>
+            {#if project.url}
+              <p>
+                <a href={project.url} target="_blank">Visitar Sitio</a>
+              </p>
+            {/if}
+          </div>
+          <div class="mx-0 max-w-sm">
+            {#if project.preview}
+              <img
+                src={project.preview.url}
+                alt=""
+                class="w-full h-32 object-contain" />
+            {/if}
+          </div>
+        </div>
+      {/each}
+    </div>
+  {/if}
 
-  </div>
-{/if}
+</div>
+<!-- {/if} -->

@@ -8,7 +8,7 @@
     parse: (params) => {
       const query = parse(params, { ignoreQueryPrefix: true })
 
-      return { ...query, locale: query.locale ?? "es-MX" }
+      return { ...query, locale: query.locale || "es-MX" }
     },
     stringify: (params) => stringify({ ...params }, { addQueryPrefix: true }),
   }

@@ -23,5 +23,8 @@ export const profile = derived(
       },
     )
       .then((r) => r.json())
-      .then((data) => data.data.author as Author),
+      .then((data) => data.data.author as Author)
+      .catch((err) => {
+        console.log(err)
+      }),
 )

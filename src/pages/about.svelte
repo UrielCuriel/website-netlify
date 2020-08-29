@@ -26,7 +26,7 @@
   }px,${$scrollStore.top}px`
   let skills: {
     [n: string]: Skill[]
-  }
+  } | void
   onMount(async () => {
     showLogo(true)
     skills = await fetch(
@@ -43,10 +43,13 @@
       .then((r) => r.json())
       .then((data) =>
         (data.data.skillCollection.items as Skill[]).reduce((group, item) => {
-          group[item["type"]] = [...(group[item["type"]] ?? []), item]
+          group[item["type"]] = [...(group[item["type"]] || []), item]
           return group
         }, {}),
       )
+      .catch((err) => {
+        console.log(err)
+      })
   })
   $: opacity = (center, maxOpacity = 1, minOpacity = 0) => {
     return Math.abs(
@@ -73,31 +76,33 @@
 {#if $isActive('/about')}
   <div class="container m-auto">
     {#await $profile then profile}
-      <div
-        class="min-h-screen h-full flex flex-col-reverse md:flex-row
-        items-center relative justify-end">
+      {#if profile}
         <div
-          class="w-full md:w-2/3 md:text-2xl text-neutral-600 p-4"
-          style={`transform: translate(0,${$scrollStore.top * 0.5}px); opacity: ${opacity(0)}`}>
-          {@html converter.makeHtml(profile.resume)}
+          class="min-h-screen h-full flex flex-col-reverse md:flex-row
+          items-center relative justify-end">
+          <div
+            class="w-full md:w-2/3 md:text-2xl text-neutral-600 p-4"
+            style={`transform: translate(0,${$scrollStore.top * 0.5}px); opacity: ${opacity(0)}`}>
+            {@html converter.makeHtml(profile.resume)}
+          </div>
+          <div
+            class="w-2/3 md:w-1/3 overflow-hidden shadow-lg rounded-full z-20"
+            style={`transform: translate(${profilePicPos});`}>
+            <img src={profile.profilePic.url} alt="" />
+          </div>
         </div>
         <div
-          class="w-2/3 md:w-1/3 overflow-hidden shadow-lg rounded-full z-20"
-          style={`transform: translate(${profilePicPos});`}>
-          <img src={profile.profilePic.url} alt="" />
+          class="min-h-screen h-full flex flex-col-reverse md:flex-row
+          items-center relative justify-center">
+          <div
+            class="w-full md:w-2/3 md:text-2xl text-neutral-600 p-4 mt-12"
+            style={`transform: translate(0,${x > 1 ? ($scrollStore.top - $sizeStore.y * 1) * 0.3 : 0}px);opacity: ${opacity(1.5)}`}>
+            {@html converter.makeHtml(profile.bio)}
+          </div>
+          <div
+            class="w-5/6 md:w-1/3 overflow-hidden shadow-lg rounded-full z-20 " />
         </div>
-      </div>
-      <div
-        class="min-h-screen h-full flex flex-col-reverse md:flex-row
-        items-center relative justify-center">
-        <div
-          class="w-full md:w-2/3 md:text-2xl text-neutral-600 p-4 mt-12"
-          style={`transform: translate(0,${x > 1 ? ($scrollStore.top - $sizeStore.y * 1) * 0.3 : 0}px);opacity: ${opacity(1.5)}`}>
-          {@html converter.makeHtml(profile.bio)}
-        </div>
-        <div
-          class="w-5/6 md:w-1/3 overflow-hidden shadow-lg rounded-full z-20 " />
-      </div>
+      {/if}
       <div class="min-h-screen h-full grid content-center p-4">
         {#if skills}
           <div class="">
@@ -168,6 +173,8 @@
         {/if}
 
       </div>
+    {:catch}
+      <span>no data</span>
     {/await}
   </div>
 {/if}
