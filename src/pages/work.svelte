@@ -6,58 +6,75 @@
   import { documentToHtmlString } from "@contentful/rich-text-html-renderer"
   import { url, isActive } from "@sveltech/routify"
   import { sizeStore } from "../store/tornis"
-  let { show, svg, moveSvg, showTitles, setSize, width, height } = getContext(
-    "landing",
-  )
+  import type { Project } from "../types/types"
+  import { queryProjects } from "../api/queries"
+  import { converter } from "../utils/showdown"
   let { showLogo } = getContext("nav")
-  let services: IService[]
-  let projects: IProject[]
-  $: {
-    if ($sizeStore.x && $svg) {
-      setSize($sizeStore.x / 1.7)
+  let projects: Project[]
 
-      moveSvg(0 - $width / 2.2, 0 - $height / 2.6)
-    }
-  }
   onMount(async () => {
-    showTitles(true)
-    show(true)
     showLogo(true)
-    projects = await getProjects()
+    projects = await fetch(
+      "https://graphql.contentful.com/content/v1/spaces/z2zerwqbgp83?access_token=c8mJZPX9JYslaSSJYhLlddBzA-RKPQuS5l_kh2XFjng",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ query: queryProjects }),
+      },
+    )
+      .then((r) => r.json())
+      .then((data) => data.data.projectCollection.items)
   })
 </script>
 
+<style>
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+</style>
+
 {#if $isActive('/work')}
-  <div
-    transition:fly={{ x: 200, delay: 1500 }}
-    class="w-full max-w-screen-md float-right my-16 p-8">
+  <div class="container mx-auto my-16 ">
     {#if projects}
       <h1 class="text-4xl text-primary-500">Proyectos</h1>
-      {#each projects as project}
-        <div
-          transition:fade|local
-          class="flex my-4 flex-col-reverse lg:flex-row">
-          <div class="w-full mx-0">
-            <h1 class="text-xl text-support-500 font-display">
-              {project.fields.title}
-            </h1>
-            <p>
-              {@html documentToHtmlString(project.fields.description)}
-            </p>
-            {#if project.fields.url}
+      <div class="projects col-gap-4">
+        {#each projects as project, i}
+          <div
+            transition:fly={{ x: 200, delay: i * 100 }}
+            class="flex my-4 flex-col shadow-md p-2">
+            <div class="w-full mx-0">
+              <h1 class="text-xl text-support-500">{project.title}</h1>
               <p>
-                <a href={project.fields.url} target="_blank">Visitar Sitio</a>
+                {@html converter.makeHtml(project.description)}
               </p>
-            {/if}
+            </div>
+            <div>
+              {#each project.skillsCollection.items as skill}
+                <div class="badge">{skill.name}</div>
+              {/each}
+            </div>
+            <div>
+              {#if project.url}
+                <p>
+                  <a href={project.url} target="_blank">Visitar Sitio</a>
+                </p>
+              {/if}
+            </div>
+            <div class="mx-0 max-w-sm">
+              {#if project.preview}
+                <img
+                  src={project.preview?.url}
+                  alt=""
+                  class="w-full h-32 object-contain" />
+              {/if}
+            </div>
           </div>
-          <div class="mx-0 max-w-sm">
-            <img
-              src={project.fields.preview.fields.file.url}
-              alt=""
-              class="w-full h-32 object-cover" />
-          </div>
-        </div>
-      {/each}
+        {/each}
+      </div>
     {/if}
 
   </div>

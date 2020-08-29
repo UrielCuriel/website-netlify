@@ -87,3 +87,29 @@ query Skills{
     }
   }
   `
+export const queryProjects = `
+query Projects {
+  projectCollection(limit: 20, where: {url_exists:true}, order: date_ASC) {
+    items {
+      sys {
+        id
+      }
+      title
+      url
+      date
+      description
+      challenges
+      contribution
+      preview {
+        url
+      }
+      skillsCollection {
+        items {
+          name
+        }
+      }
+    }
+  }
+}
+
+`

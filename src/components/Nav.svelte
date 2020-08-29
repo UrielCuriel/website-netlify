@@ -60,13 +60,13 @@
       title: "Mi Trabajo",
       text: "mi portafolio está aqui",
     },
-    {
-      href: "/skills",
-      name: "skills",
-      segment: "skills",
-      title: "Habilidades",
-      text: "Mis habilidades las encuentras en esta sección",
-    },
+    // {
+    //   href: "/skills",
+    //   name: "skills",
+    //   segment: "skills",
+    //   title: "Habilidades",
+    //   text: "Mis habilidades las encuentras en esta sección",
+    // },
     {
       href: "/blog",
       name: "blog",
@@ -94,7 +94,7 @@
       @apply flex-row;
     }
     .menu-list-item {
-      @apply h-full w-1/5;
+      @apply h-full w-1/4;
     }
   }
   .menu-list-item a {
@@ -168,21 +168,24 @@
         xml:space="preserve">
         {#if active}
           <line
-            transition:draw
+            in:draw={{ delay: 250, duration: 200 }}
+            out:draw={{ duration: 200 }}
             class="st0"
             x1="96.8"
             y1="83"
             x2="347.2"
             y2="333.4" />
           <line
-            transition:draw
+            in:draw={{ delay: 250, duration: 200 }}
+            out:draw={{ duration: 200 }}
             class="st0"
             x1="89.1"
             y1="422.9"
             x2="422.9"
             y2="89.1" />
           <line
-            transition:draw
+            in:draw={{ delay: 250, duration: 200 }}
+            out:draw={{ duration: 200 }}
             class="st0"
             x1="263.7"
             y1="249.9"
@@ -190,15 +193,24 @@
             y2="416.8" />
         {:else}
           <line
-            transition:draw
+            in:draw={{ delay: 250, duration: 200 }}
+            out:draw={{ duration: 200 }}
             class="st0"
             x1="492"
             y1="256"
             x2="138"
             y2="256" />
-          <line transition:draw class="st0" x1="492" y1="20" x2="20" y2="20" />
           <line
-            transition:draw
+            in:draw={{ delay: 250, duration: 200 }}
+            out:draw={{ duration: 200 }}
+            class="st0"
+            x1="492"
+            y1="20"
+            x2="20"
+            y2="20" />
+          <line
+            in:draw={{ delay: 250, duration: 200 }}
+            out:draw={{ duration: 200 }}
             class="st0"
             x1="492"
             y1="492"
