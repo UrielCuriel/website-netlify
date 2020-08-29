@@ -3,6 +3,7 @@
   import { queryProfile, querySkills } from "../../api/queries"
   import { converter } from "../../utils/showdown"
   import { documentToHtmlString } from "@contentful/rich-text-html-renderer"
+  import type { Author, Skill } from "../../types/types"
   let data: Author
   let skills: {
     [x: string]: Skill[]
