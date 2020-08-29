@@ -11,13 +11,18 @@
   } from "../api/cms"
   import { each, onDestroy, getContext } from "svelte/internal"
   import { documentToHtmlString } from "@contentful/rich-text-html-renderer"
-  import { url, beforeUrlChange, isActive } from "@sveltech/routify"
+  import { url, beforeUrlChange, isActive, metatags } from "@sveltech/routify"
   import { sizeStore, scrollStore } from "../store/tornis"
   import { writable } from "svelte/store"
   import { profile } from "../store/profile"
   import type { Skill } from "../types/types"
   import { querySkills } from "../api/queries"
   let { showLogo } = getContext("nav")
+
+  metatags.title = "Uriel Curiel | Acerca"
+  metatags.description = "Uriel Curiel IT Consultant"
+  metatags.keywords =
+    "IT Consultant,web developer,wix,FullStack,webiste,frontend"
 
   $: x = $scrollStore.top / $sizeStore.y
 

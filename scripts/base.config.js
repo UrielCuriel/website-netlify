@@ -76,6 +76,7 @@ function baseConfig(config, ctx) {
         __website: JSON.stringify({
           env: {
             ...envConfig().parsed,
+            ...process.env,
           },
         }),
       }),

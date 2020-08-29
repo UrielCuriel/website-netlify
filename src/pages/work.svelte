@@ -4,14 +4,17 @@
   import type { IService, IProject } from "../types/contentful"
   import { fade, fly } from "svelte/transition"
   import { documentToHtmlString } from "@contentful/rich-text-html-renderer"
-  import { url, isActive } from "@sveltech/routify"
+  import { url, isActive, metatags } from "@sveltech/routify"
   import { sizeStore } from "../store/tornis"
   import type { Project } from "../types/types"
   import { queryProjects } from "../api/queries"
   import { converter } from "../utils/showdown"
   let { showLogo } = getContext("nav")
   let projects: Project[]
-
+  metatags.title = "Uriel Curiel | Proyectos"
+  metatags.description = "Uriel Curiel IT Consultant"
+  metatags.keywords =
+    "IT Consultant,web developer,wix,FullStack,webiste,frontend"
   onMount(async () => {
     showLogo(true)
     projects = await fetch(
